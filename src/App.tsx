@@ -8,6 +8,8 @@ import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { useIsMobile } from "./hooks/isMobile";
 import ActiveCardLayout from "./activeCardLayout";
+import UnactiveCardLayout from "./unactiveCardLayout";
+import type { style } from "motion/react-client";
 
 export interface CardData {
     title: string;
@@ -35,7 +37,7 @@ const cards: CardData[] = [
     },
     {
         bgURL: "/photo1.avif",
-        title: "Random Title",
+        title: "Second Random Title",
         description: "Random Description",
         bulletPoints: [
             "bullentpoints 1",
@@ -49,7 +51,7 @@ const cards: CardData[] = [
     },
     {
         bgURL: "/photo4.jpg",
-        title: "Random Title",
+        title: "Third Random Title",
         description: "Random Description",
         bulletPoints: [
             "bullentpoints 1",
@@ -63,7 +65,7 @@ const cards: CardData[] = [
     },
     {
         bgURL: "/photo3.avif",
-        title: "Random Title",
+        title: "Fourth Random Title",
         description: "Random Description",
         bulletPoints: [
             "bullentpoints 1",
@@ -139,14 +141,18 @@ const App = () => {
                         }}
                     >
                         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-                        {active === i && (
+                        {active === i ? (
                             <div className="relative z-10 h-full flex">
                                 <ActiveCardLayout card={card} />
+                            </div>
+                        ) : (
+                            <div className="relative z-10 h-full flex">
+                                <UnactiveCardLayout card={card} />
                             </div>
                         )}
                         <motion.div
                             key={i}
-                            className={`flex absolute gap-4 justify-center ${isMobile ? "left-4 bottom-0 flex-col items-center flex-1 h-full" : "bottom-10 justify-center items-center w-full"}`}
+                            className={`flex absolute gap-4 justify-center ${isMobile ? "left-2 bottom-0 flex-col items-center flex-1 h-full" : "bottom-10 justify-center items-center w-full"}`}
                             animate={{
                                 scaleX: isMobile ? 1 : active === i ? 1 : 0,
                                 scaleY: isMobile ? (active === i ? 1 : 0) : 1,
@@ -158,11 +164,15 @@ const App = () => {
                             }}
                         >
                             <div
-                                className={`relative w-1/2 rounded-2xl overflow-hidden ${isMobile ? "h-1/2" : "h-4"} bg-[${card.color}]/40`}
+                                className={`relative w-1/2 rounded-2xl overflow-hidden ${isMobile ? "h-1/2" : "h-4"}`}
+                                style={{
+                                    backgroundColor: card.color + "40",
+                                }}
                             >
                                 <motion.div
                                     key={active}
                                     className={`w-full h-full bg-[${card.color}] ${isMobile ? "origin-top" : "origin-left"}`}
+                                    style={{ backgroundColor: card.color }}
                                     initial={{
                                         scaleX: isMobile ? 1 : 0,
                                         scaleY: isMobile ? 0 : 1,
